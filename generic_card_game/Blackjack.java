@@ -13,20 +13,24 @@ public class Blackjack extends RulesEngine {
   public void start(){
 
   }
-  public void distributeCards(){
-
-  }
+  
   public boolean checkForWinner(){
     return false;
   }
   
- 
-  
-  public Player compareHands(Player player, Dealer dealer){
-    return new Player("Rupe");
+ //Testing............
+  public void distributeCards(){
+    
   }
   
-  //Testing............
+  public boolean playerWins(Player player, Dealer dealer){
+    int score_of_player = scoreHand(player);
+    int score_of_dealer = scoreHand(dealer);
+
+    if (score_of_player > score_of_dealer )
+      return true;
+    else return false;
+  }
   
   public Player compareHands(LinkedList<Player> players){
     int results[] = new int[players.size()];

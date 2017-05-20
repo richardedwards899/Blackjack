@@ -87,5 +87,12 @@ public class BlackjackTest {
     assertEquals(player1, blackjack.compareHands(players));
   }
 
+  @Test
+  public void testPlayerBeatsDealer(){
+    player1.accept(new Card(CardSuit.SPADE, CardNumber.SIX));
+    dealer.accept(new Card(CardSuit.HEART, CardNumber.FIVE));
+    assertEquals(true, blackjack.playerWins(player1, dealer));
+  }
+
   // }
 }

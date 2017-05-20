@@ -19,5 +19,5 @@ public abstract class RulesEngine{
   public abstract int value(Card card);
   public abstract int scoreHand(Player player);
   public abstract Player compareHands(LinkedList<Player> players);
-  public abstract Player compareHands(Player player, Dealer dealer);
+  public abstract boolean playerWins(Player player, Dealer dealer);
 }
