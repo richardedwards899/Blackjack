@@ -18,9 +18,7 @@ public class Blackjack extends RulesEngine {
     return false;
   }
   
-  public int scoreHand(Player player){
-    return 0;
-  }
+ 
   public Player compareHands(LinkedList<Player> players){
     return new Player("Bob");
   }
@@ -28,6 +26,12 @@ public class Blackjack extends RulesEngine {
     return new Player("Rupe");
   }
   //Testing............
+
+  public int scoreHand(Player player){
+    return 0;
+  }
+
+  //TESTED!
   public int value(Card card){
     int return_value = 0;
     switch (card.getNumber()){
@@ -74,6 +78,6 @@ public class Blackjack extends RulesEngine {
     return return_value;
   }
 
-  //TESTED!
+
 
 }

@@ -22,4 +22,8 @@ public class Player {
     return hand.size();
   }
 
+  public LinkedList<Card> hand(){
+    return hand;
+  }
+
 }
