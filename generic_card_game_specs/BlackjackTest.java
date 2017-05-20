@@ -17,6 +17,8 @@ public class BlackjackTest {
 
   @Before
   public void before(){
+    player1 = new Player("Richard");
+    player2 = new Player("Corrie");
     dealer = new Dealer("Dealer");
     deck = new Deck(suits, numbers);
     players = new LinkedList<Player>();
@@ -43,8 +45,28 @@ public class BlackjackTest {
     assertEquals(1, blackjack.value(card));
   }
 
-  
+  @Test
+  public void testScoreSingleCardInHand(){
+    player1.accept(new Card(CardSuit.HEART, CardNumber.FOUR));
+    assertEquals(4, blackjack.scoreHand(player1));
+  }
 
-   
+  @Test
+  public void testScoreMultipleCardsInHand(){
+    player1.accept(new Card(CardSuit.HEART, CardNumber.FOUR));
+    player1.accept(new Card(CardSuit.CLUB, CardNumber.JACK));
+
+    assertEquals(14, blackjack.scoreHand(player1));
+  }
+
+  @Test
+  public void testScoreMultipleCardsInHand__BUST(){
+    player1.accept(new Card(CardSuit.HEART, CardNumber.FOUR));
+    player1.accept(new Card(CardSuit.CLUB, CardNumber.JACK));
+    player1.accept(new Card(CardSuit.CLUB, CardNumber.EIGHT));
+
+    assertEquals(-1, blackjack.scoreHand(player1));
+  }
+
   // }
 }

@@ -3,6 +3,8 @@ import java.util.LinkedList;
 
 public class Blackjack extends RulesEngine {
 
+  public static int bust = 21;
+
   public Blackjack(Dealer dealer, Deck deck, LinkedList<Player> players){
     super(dealer, deck, players);
   }
@@ -27,11 +29,18 @@ public class Blackjack extends RulesEngine {
   }
   //Testing............
 
+  //TESTED!
   public int scoreHand(Player player){
-    return 0;
+    int score = 0;
+    for (Card card: player.hand()){
+      score += value(card);
+    }
+    if (score > bust){
+      return -1;
+    }
+    else return score;
   }
 
-  //TESTED!
   public int value(Card card){
     int return_value = 0;
     switch (card.getNumber()){
