@@ -19,4 +19,10 @@ public class DeckTest {
   public void canCreateDeck(){
     assertEquals(52, deck.numberOfCards());
   }
+
+  @Test
+  public void getGetCard(){
+    Card card = deck.getCard();
+    assertEquals(51, deck.numberOfCards());
+  }
 }
