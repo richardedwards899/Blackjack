@@ -16,8 +16,17 @@ public class Deck {
   }
 
   public Card getCard(){
-    int random_card_position = randomNumber(cards.size()); 
-    return cards.remove(random_card_position);
+    if (cards.size() > 0) {
+      int random_card_position = randomNumber(cards.size()); 
+      return cards.remove(random_card_position);
+    }
+    else return null;
+  }
+
+  public void print(){
+    for(int i=0; i<numberOfCards(); i++){
+      System.out.println(cards.get(i).getSuit()+" "+cards.get(i).getNumber());
+    }
   }
 
   private void createCards(){

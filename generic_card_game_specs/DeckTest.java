@@ -25,4 +25,25 @@ public class DeckTest {
     Card card = deck.getCard();
     assertEquals(51, deck.numberOfCards());
   }
+
+  @Test
+  public void getGetAllCards(){
+    int cards_in_deck = deck.numberOfCards();
+    for(int i=0; i<cards_in_deck; i++){
+      Card card = deck.getCard();
+    }
+  assertEquals(0, deck.numberOfCards());
+  }
+
+  @Test
+  public void cantGetMoreCardsThanExist(){
+    int cards_in_deck = deck.numberOfCards();
+    Card card = new Card(CardSuit.CLUB, CardNumber.TWO);
+
+    for(int i=0; i< (cards_in_deck + 1); i++){
+      card = deck.getCard();
+    }
+  assertEquals(0, deck.numberOfCards());
+  assertNull(null, card);   
+  }
 }
