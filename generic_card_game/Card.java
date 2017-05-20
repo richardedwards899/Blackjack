@@ -1,4 +1,5 @@
 package generic_card_game;
+import java.util.LinkedList;
 
 public class Card {
 
