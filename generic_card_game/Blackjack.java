@@ -21,13 +21,29 @@ public class Blackjack extends RulesEngine {
   }
   
  
-  public Player compareHands(LinkedList<Player> players){
-    return new Player("Bob");
-  }
+  
   public Player compareHands(Player player, Dealer dealer){
     return new Player("Rupe");
   }
+  
   //Testing............
+  
+  public Player compareHands(LinkedList<Player> players){
+    int results[] = new int[players.size()];
+    int max_position = 0;
+    int index = 0;
+    int max_score = scoreHand(players.getFirst());
+
+    for(Player player: players){
+      results[index] = scoreHand(player);
+      if (results[index] > max_score) {
+        max_score = results[index];
+        max_position = index;
+      }
+      index++;
+    }
+    return players.get(max_position);
+  }
 
   //TESTED!
   public int scoreHand(Player player){

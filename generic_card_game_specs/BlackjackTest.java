@@ -68,5 +68,24 @@ public class BlackjackTest {
     assertEquals(-1, blackjack.scoreHand(player1));
   }
 
+  @Test
+  public void testWhichHandIsBigger(){
+    player1.accept(new Card(CardSuit.HEART, CardNumber.FOUR));
+    player2.accept(new Card(CardSuit.HEART, CardNumber.FIVE));
+    assertEquals(player2, blackjack.compareHands(players));
+  }
+
+  @Test
+  public void testWhichHandIsBigger_multiple_cards_draw(){
+    player1.accept(new Card(CardSuit.SPADE, CardNumber.FOUR));
+    player1.accept(new Card(CardSuit.HEART, CardNumber.EIGHT));
+    player1.accept(new Card(CardSuit.CLUB, CardNumber.EIGHT));
+    player2.accept(new Card(CardSuit.HEART, CardNumber.FIVE));
+    player2.accept(new Card(CardSuit.HEART, CardNumber.TEN));
+    player2.accept(new Card(CardSuit.CLUB, CardNumber.FIVE));
+    
+    assertEquals(player1, blackjack.compareHands(players));
+  }
+
   // }
 }
