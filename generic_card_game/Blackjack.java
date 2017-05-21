@@ -9,20 +9,20 @@ public class Blackjack extends RulesEngine {
     super(dealer, deck, players);
   }
 
-  //UNTESTED!!!
-  public void start(){
+  public void run(){
+    dealCards();
 
   }
   
-  public boolean checkForWinner(){
-    return false;
+  public void dealCards(){
+    for (Player player: players){
+      dealer.dealCard(deck, player);
+      dealer.dealCard(deck, player);
+    }
+    dealer.dealCard(deck, dealer);
+    dealer.dealCard(deck, dealer);
   }
-  
- //Testing............
-  public void distributeCards(){
-    
-  }
-  
+
   public boolean playerWins(Player player, Dealer dealer){
     int score_of_player = scoreHand(player);
     int score_of_dealer = scoreHand(dealer);
@@ -32,13 +32,14 @@ public class Blackjack extends RulesEngine {
     else return false;
   }
   
+  /* this is required for the Homework specification, but not by Blackjack */
   public Player compareHands(LinkedList<Player> players){
     int results[] = new int[players.size()];
     int max_position = 0;
     int index = 0;
     int max_score = scoreHand(players.getFirst());
 
-    for(Player player: players){
+    for(Player player : players){
       results[index] = scoreHand(player);
       if (results[index] > max_score) {
         max_score = results[index];
@@ -49,7 +50,6 @@ public class Blackjack extends RulesEngine {
     return players.get(max_position);
   }
 
-  //TESTED!
   public int scoreHand(Player player){
     int score = 0;
     for (Card card: player.hand()){
@@ -59,6 +59,16 @@ public class Blackjack extends RulesEngine {
       return -1;
     }
     else return score;
+  }
+
+  public int pointsOfNonAceCards(Player player){
+    int points = 0;
+    for (Card card: player.hand()){
+      if (card.getNumber() != CardNumber.ACE){
+        points += value(card);
+      }
+    }
+    return points;
   }
 
   public int value(Card card){
@@ -106,7 +116,4 @@ public class Blackjack extends RulesEngine {
     }
     return return_value;
   }
-
-
-
 }

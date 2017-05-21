@@ -7,7 +7,9 @@ public class Dealer extends Player {
   }
 
   public void dealCard(Deck deck, Player player){
-    player.accept( deck.getCard() );
+    Card card = deck.getCard();
+    // System.out.println("Dealer deals "+card.print()+" to "+player.getName());
+    player.accept(card);
   }
 
 }

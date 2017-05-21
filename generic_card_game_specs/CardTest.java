@@ -17,4 +17,9 @@ public class CardTest {
     assertEquals(CardSuit.HEART, card.getSuit());
     assertEquals(CardNumber.TWO, card.getNumber());
   }
+
+  @Test
+  public void canPrintCard(){
+    assertEquals("HEART TWO", card.print());
+  }
 }

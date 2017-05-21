@@ -26,4 +26,23 @@ public class Player {
     return hand;
   }
 
+  public int numberOfAces(){
+    int aceCount = 0;
+    for (Card card : hand){
+      if (card.getNumber() == CardNumber.ACE){
+        aceCount++;
+      }
+    }
+    return aceCount;
+  }
+
+  public String printHand(){
+    String return_string = "";
+    for (Card card: hand){
+      return_string += card.print();
+      return_string += '\n';
+    }
+    return return_string;
+  }
+
 }

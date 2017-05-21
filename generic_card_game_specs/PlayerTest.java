@@ -28,7 +28,7 @@ public class PlayerTest {
   @Test
   public void canHoldMultipleCardsInHand(){
     Card card1 = new Card(CardSuit.CLUB, CardNumber.ACE);
-    Card card2 = new Card(CardSuit.CLUB, CardNumber.ACE);
+    Card card2 = new Card(CardSuit.HEART, CardNumber.ACE);
     player.accept(card1);
     player.accept(card2);
     assertEquals(2, player.numberOfCards());
@@ -37,12 +37,32 @@ public class PlayerTest {
   @Test
   public void canReturnHand(){
    Card card1 = new Card(CardSuit.CLUB, CardNumber.ACE);
-   Card card2 = new Card(CardSuit.CLUB, CardNumber.ACE);
+   Card card2 = new Card(CardSuit.CLUB, CardNumber.THREE);
    player.accept(card1);
    player.accept(card2);
    LinkedList<Card> expected = new LinkedList<Card>();
    expected.add(card1);
    expected.add(card2);
    assertEquals(expected, player.hand());
+  }
+
+  @Test
+  public void canPrintHand(){
+    Card card1 = new Card(CardSuit.CLUB, CardNumber.ACE);
+    Card card2 = new Card(CardSuit.CLUB, CardNumber.TEN);
+    player.accept(card1);
+    player.accept(card2);
+    assertEquals("CLUB ACE"+'\n'+"CLUB TEN"+'\n', player.printHand());
+  }
+
+  @Test
+  public void canCountNumberOfAcesInHand(){
+    Card card1 = new Card(CardSuit.CLUB, CardNumber.ACE);
+    Card card2 = new Card(CardSuit.HEART, CardNumber.ACE);
+    Card card3 = new Card(CardSuit.CLUB, CardNumber.NINE);
+    player.accept(card1);
+    player.accept(card2);
+    player.accept(card3);
+    assertEquals(2, player.numberOfAces());
   }
 }

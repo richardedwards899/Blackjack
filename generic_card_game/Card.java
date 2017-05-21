@@ -18,4 +18,8 @@ public class Card {
   public CardNumber getNumber(){
     return number;
   }
+
+  public String print(){
+    return suit+" "+number;
+  }
 }

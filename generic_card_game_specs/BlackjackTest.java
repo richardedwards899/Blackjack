@@ -2,6 +2,8 @@ import static org.junit.Assert.*;
 import org.junit.*;
 import generic_card_game.*;
 import java.util.LinkedList;
+import org.mockito.*;
+import static org.mockito.Mockito.*;
 
 public class BlackjackTest {
 
@@ -17,7 +19,7 @@ public class BlackjackTest {
 
   @Before
   public void before(){
-    player1 = new Player("Richard");
+    player1 = new Player("Nigel");
     player2 = new Player("Corrie");
     dealer = new Dealer("Dealer");
     deck = new Deck(suits, numbers);
@@ -94,5 +96,62 @@ public class BlackjackTest {
     assertEquals(true, blackjack.playerWins(player1, dealer));
   }
 
-  // }
+  @Test
+  public void testCanDistributeTwoCards(){
+    blackjack.dealCards();
+    assertEquals(2, player1.numberOfCards());
+    assertEquals(2, player2.numberOfCards());
+    assertEquals(2, dealer.numberOfCards());
+  }
+
+  @Test 
+  public void canScoreNonAceCards(){
+    Card card1 = new Card(CardSuit.CLUB, CardNumber.ACE);
+    Card card2 = new Card(CardSuit.HEART, CardNumber.ACE);
+    Card card3 = new Card(CardSuit.CLUB, CardNumber.SIX);
+    Card card4 = new Card(CardSuit.CLUB, CardNumber.TWO);
+    Card card5 = new Card(CardSuit.CLUB, CardNumber.FOUR);
+    player1.accept(card1);
+    player1.accept(card2);
+    player1.accept(card3);
+    player1.accept(card4);
+    player1.accept(card5);
+    assertEquals(12, blackjack.pointsOfNonAceCards(player1));
+  }
+
+  @Test
+  public void canRunBlackjack(){
+
+    //artificially specifies the order of the cards that will be dealt to Player1, Player 2 and the dealer.
+    Card card1 = new Card(CardSuit.HEART, CardNumber.TEN);
+    Card card2 = new Card(CardSuit.CLUB, CardNumber.SIX);
+    Card card3 = new Card(CardSuit.DIAMOND, CardNumber.FIVE);
+    Card card4 = new Card(CardSuit.SPADE, CardNumber.SEVEN);
+    Card card5 = new Card(CardSuit.HEART, CardNumber.NINE);
+    Card card6 = new Card(CardSuit.SPADE, CardNumber.SIX);
+
+    Deck mock_deck = mock(Deck.class);
+    blackjack = new Blackjack(dealer, mock_deck, players);
+
+    when(mock_deck.getCard()).thenReturn(card1).thenReturn(card2).thenReturn(card3).thenReturn(card4).thenReturn(card5).thenReturn(card6);
+
+    blackjack.run();
+
+    assertEquals(2, player1.hand().size());
+    assertEquals(2, player2.hand().size());
+    assertEquals(2, dealer.hand().size());
+
+    assertEquals("HEART TEN"+'\n'+"CLUB SIX"+'\n', player1.printHand());
+    assertEquals("DIAMOND FIVE"+'\n'+"SPADE SEVEN"+'\n', player2.printHand());
+    assertEquals("HEART NINE"+'\n'+"SPADE SIX"+'\n', dealer.printHand());
+
+
+
+    // assertEquals(true, blackjack.playerWins(player1, dealer));
+    // assertEquals(false, blackjack.playerWins(player2, dealer));
+    // assertEquals(player1, blackjack.compareHands(players));
+
+
+
+  }
 }

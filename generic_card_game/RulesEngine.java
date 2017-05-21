@@ -3,9 +3,9 @@ import java.util.LinkedList;
 
 public abstract class RulesEngine{
 
-  private Dealer dealer;
-  private Deck deck;
-  private LinkedList<Player> players; 
+  protected Dealer dealer;
+  protected Deck deck;
+  protected LinkedList<Player> players; 
 
   public RulesEngine(Dealer dealer, Deck deck, LinkedList<Player> players){
     this.dealer = dealer;
@@ -13,9 +13,8 @@ public abstract class RulesEngine{
     this.players = players;
   }
 
-  public abstract void start();
-  public abstract void distributeCards();
-  public abstract boolean checkForWinner();
+  public abstract void run();
+  public abstract void dealCards();
   public abstract int value(Card card);
   public abstract int scoreHand(Player player);
   public abstract Player compareHands(LinkedList<Player> players);
