@@ -4,10 +4,14 @@ import java.util.LinkedList;
 public class Player {
   private String name;
   private LinkedList<Card> hand;
+  private boolean isAggressive;
+  private int twistPoint;
 
-  public Player(String name){
+  public Player(String name, boolean isAggressive, int twistPoint){
     this.name = name;
     hand = new LinkedList<Card>();
+    this.isAggressive = isAggressive;
+    this.twistPoint = twistPoint;
   }
 
   public String getName(){
@@ -43,6 +47,14 @@ public class Player {
       return_string += '\n';
     }
     return return_string;
+  }
+
+  public boolean isAggressive(){
+    return isAggressive;
+  }
+
+  public int twistPoint(){
+    return twistPoint;
   }
 
 }

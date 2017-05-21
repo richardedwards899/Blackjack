@@ -10,12 +10,14 @@ public class PlayerTest {
 
   @Before
   public void before(){
-    player = new Player("Stevie");
+    player = new Player("Stevie", true, 17);
   }
 
   @Test
   public void canCreatePlayer(){
     assertEquals("Stevie", player.getName());
+    assertEquals(true, player.isAggressive());
+    assertEquals(17, player.twistPoint());
   }
 
   @Test

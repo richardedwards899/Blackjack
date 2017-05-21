@@ -11,7 +11,52 @@ public class Blackjack extends RulesEngine {
 
   public void run(){
     dealCards();
+    askAllPlayersIfTheyWannaTwist();
+    dealerFlops();
+    declareResults();
+  }
 
+  private void declareResults(){
+    for (Player player: players){
+      if (playerWins(player, dealer)){
+        System.out.println(player.getName()+" wins with a score of (aces low) "+scoreHand(player)[0]+" and (aces high) "+scoreHand(player)[1]);
+      }
+      else {
+        System.out.println(player.getName()+" loses with a score of (aces low) "+scoreHand(player)[0]+" and (aces high) "+scoreHand(player)[1]);
+      }
+      System.out.println(dealer.getName()+ " has a score of (aces low) "+scoreHand(dealer)[0]+" and (aces high) "+scoreHand(dealer)[1]);
+    }
+  }
+
+  private void dealerFlops(){
+    dealer.dealCard(deck, dealer);
+  }
+
+  private void askAllPlayersIfTheyWannaTwist(){
+    for (Player player: players){
+      while (twist(player)){
+        dealer.dealCard(deck, player);
+      }
+    }
+  }
+
+  private boolean twist(Player player){
+    int[] scores = scoreHand(player);
+
+    if (bust(player)){
+      return false;
+    }
+    if (player.isAggressive()){
+      return (scores[0] < player.twistPoint());
+    }
+    else {
+      return (scores[0] < player.twistPoint() && scores[1] < player.twistPoint());
+    } 
+  }
+
+  private boolean bust(Player player){
+    int[] scores = scoreHand(player);
+    return scores[0] == -1 && scores[1] == -1;
   }
   
   public void dealCards(){

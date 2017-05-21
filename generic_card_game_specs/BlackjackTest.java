@@ -7,7 +7,6 @@ import static org.mockito.Mockito.*;
 
 public class BlackjackTest {
 
-  //test variables here
   Dealer dealer;
   CardSuit suits;
   CardNumber numbers;
@@ -19,9 +18,9 @@ public class BlackjackTest {
 
   @Before
   public void before(){
-    player1 = new Player("Nigel");
-    player2 = new Player("Corrie");
-    dealer = new Dealer("Dealer");
+    player1 = new Player("Nigel", true, 17);
+    player2 = new Player("Corrie", false, 17);
+    dealer = new Dealer("Dealer", false, 17);
     deck = new Deck(suits, numbers);
     players = new LinkedList<Player>();
     players.add(player1);
@@ -187,13 +186,13 @@ public class BlackjackTest {
     assertEquals(-1, scores[1]);
   }
 
-  @Test
-  public void testCanDistributeTwoCards(){
-    blackjack.dealCards();
-    assertEquals(2, player1.numberOfCards());
-    assertEquals(2, player2.numberOfCards());
-    assertEquals(2, dealer.numberOfCards());
-  }
+  // @Test
+  // public void testCanDistributeTwoCards(){
+  //   blackjack.dealCards();
+  //   assertEquals(2, player1.numberOfCards());
+  //   assertEquals(2, player2.numberOfCards());
+  //   assertEquals(2, dealer.numberOfCards());
+  // }
 
   @Test 
   public void canScoreNonAceCards(){
@@ -220,29 +219,34 @@ public class BlackjackTest {
     Card card4 = new Card(CardSuit.SPADE, CardNumber.SEVEN);
     Card card5 = new Card(CardSuit.HEART, CardNumber.NINE);
     Card card6 = new Card(CardSuit.SPADE, CardNumber.SIX);
+    Card card7 = new Card(CardSuit.SPADE, CardNumber.FOUR);
+    Card card8 = new Card(CardSuit.SPADE, CardNumber.JACK);
+    Card card9 = new Card(CardSuit.SPADE, CardNumber.SIX);
 
     Deck mock_deck = mock(Deck.class);
     blackjack = new Blackjack(dealer, mock_deck, players);
 
-    when(mock_deck.getCard()).thenReturn(card1).thenReturn(card2).thenReturn(card3).thenReturn(card4).thenReturn(card5).thenReturn(card6);
+    when(mock_deck.getCard()).thenReturn(card1).thenReturn(card2).thenReturn(card3).thenReturn(card4).thenReturn(card5).thenReturn(card6).thenReturn(card7).thenReturn(card8).thenReturn(card9);
 
     blackjack.run();
 
-    assertEquals(2, player1.hand().size());
-    assertEquals(2, player2.hand().size());
-    assertEquals(2, dealer.hand().size());
+    assertEquals(3, player1.hand().size());
+    assertEquals(3, player2.hand().size());
+    assertEquals(3, dealer.hand().size());
 
-    assertEquals("HEART TEN"+'\n'+"CLUB SIX"+'\n', player1.printHand());
-    assertEquals("DIAMOND FIVE"+'\n'+"SPADE SEVEN"+'\n', player2.printHand());
-    assertEquals("HEART NINE"+'\n'+"SPADE SIX"+'\n', dealer.printHand());
+    int [] scores_player1 = blackjack.scoreHand(player1);
+    assertEquals(20, scores_player1[0]);
+    assertEquals(20, scores_player1[1]);
 
+    int [] scores_player2 = blackjack.scoreHand(player2);
+    assertEquals(-1, scores_player2[0]);
+    assertEquals(-1, scores_player2[1]);
 
+    int [] scores_dealer = blackjack.scoreHand(dealer);
+    assertEquals(21, scores_dealer[0]);
+    assertEquals(21, scores_dealer[1]);
 
-    // assertEquals(true, blackjack.playerWins(player1, dealer));
-    // assertEquals(false, blackjack.playerWins(player2, dealer));
-    // assertEquals(player1, blackjack.compareHands(players));
-
-
-
+    assertEquals(false, blackjack.playerWins(player1, dealer));
+    assertEquals(false, blackjack.playerWins(player2, dealer));
   }
 }

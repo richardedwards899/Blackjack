@@ -14,9 +14,9 @@ public class DealerTest {
 
   @Before
   public void before(){
-    dealer = new Dealer("Dealer");
+    dealer = new Dealer("Dealer", true, 17);
     deck = new Deck(suits, numbers);
-    player = new Player("Bob");
+    player = new Player("Bob", true, 17);
   }
 
   @Test
