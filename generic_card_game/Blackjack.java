@@ -35,6 +35,7 @@ public class Blackjack extends RulesEngine {
   private void askAllPlayersIfTheyWannaTwist(){
     for (Player player: players){
       while (twist(player)){
+        System.out.println(player.getName()+ ": Hit me!");
         dealer.dealCard(deck, player);
       }
     }
