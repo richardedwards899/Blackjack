@@ -50,7 +50,9 @@ public class BlackjackTest {
   @Test
   public void testScoreSingleCardInHand(){
     player1.accept(new Card(CardSuit.HEART, CardNumber.FOUR));
-    assertEquals(4, blackjack.scoreHand(player1));
+    int[] scores = blackjack.scoreHand(player1);
+    assertEquals(4, scores[0]);
+    assertEquals(4, scores[1]);
   }
 
   @Test
@@ -58,7 +60,10 @@ public class BlackjackTest {
     player1.accept(new Card(CardSuit.HEART, CardNumber.FOUR));
     player1.accept(new Card(CardSuit.CLUB, CardNumber.JACK));
 
-    assertEquals(14, blackjack.scoreHand(player1));
+    int[] scores = blackjack.scoreHand(player1);
+
+    assertEquals(14, scores[0]);
+    assertEquals(14, scores[1]); 
   }
 
   @Test
@@ -67,33 +72,119 @@ public class BlackjackTest {
     player1.accept(new Card(CardSuit.CLUB, CardNumber.JACK));
     player1.accept(new Card(CardSuit.CLUB, CardNumber.EIGHT));
 
-    assertEquals(-1, blackjack.scoreHand(player1));
+    int[] scores = blackjack.scoreHand(player1);
+
+    assertEquals(-1, scores[0]);
+    assertEquals(-1, scores[1]); 
   }
 
   @Test
-  public void testWhichHandIsBigger(){
-    player1.accept(new Card(CardSuit.HEART, CardNumber.FOUR));
-    player2.accept(new Card(CardSuit.HEART, CardNumber.FIVE));
-    assertEquals(player2, blackjack.compareHands(players));
-  }
-
-  @Test
-  public void testWhichHandIsBigger_multiple_cards_draw(){
-    player1.accept(new Card(CardSuit.SPADE, CardNumber.FOUR));
-    player1.accept(new Card(CardSuit.HEART, CardNumber.EIGHT));
+  public void testScoreHandWithOneAce(){
+    player1.accept(new Card(CardSuit.HEART, CardNumber.ACE));
     player1.accept(new Card(CardSuit.CLUB, CardNumber.EIGHT));
-    player2.accept(new Card(CardSuit.HEART, CardNumber.FIVE));
-    player2.accept(new Card(CardSuit.HEART, CardNumber.TEN));
-    player2.accept(new Card(CardSuit.CLUB, CardNumber.FIVE));
+
+    int scores[] = blackjack.scoreHand(player1);
     
-    assertEquals(player1, blackjack.compareHands(players));
+    assertEquals(9, scores[0]);
+    assertEquals(19, scores[1]);
   }
 
   @Test
-  public void testPlayerBeatsDealer(){
+  public void testScoreHandWithTwoAces(){
+    player1.accept(new Card(CardSuit.HEART, CardNumber.ACE));
+    player1.accept(new Card(CardSuit.CLUB, CardNumber.SIX));
+    player1.accept(new Card(CardSuit.SPADE, CardNumber.ACE));
+
+    int scores[] = blackjack.scoreHand(player1);
+    
+    assertEquals(8, scores[0]);
+    assertEquals(18, scores[1]);
+  }
+
+  @Test
+  public void testScoreHandWithThreeAces(){
+    player1.accept(new Card(CardSuit.HEART, CardNumber.ACE));
+    player1.accept(new Card(CardSuit.CLUB, CardNumber.THREE));
+    player1.accept(new Card(CardSuit.SPADE, CardNumber.ACE));
+    player1.accept(new Card(CardSuit.DIAMOND, CardNumber.ACE));
+
+    int scores[] = blackjack.scoreHand(player1);
+    
+    assertEquals(6, scores[0]);
+    assertEquals(16, scores[1]);
+  }
+
+  @Test
+  public void testScoreHandWithFourAces(){
+    player1.accept(new Card(CardSuit.HEART, CardNumber.ACE));
+    player1.accept(new Card(CardSuit.CLUB, CardNumber.ACE));
+    player1.accept(new Card(CardSuit.SPADE, CardNumber.ACE));
+    player1.accept(new Card(CardSuit.DIAMOND, CardNumber.ACE));
+
+    int scores[] = blackjack.scoreHand(player1);
+    
+    assertEquals(4, scores[0]);
+    assertEquals(14, scores[1]);
+  }
+
+  @Test
+  public void testPlayerBeatsDealer_wins(){
     player1.accept(new Card(CardSuit.SPADE, CardNumber.SIX));
     dealer.accept(new Card(CardSuit.HEART, CardNumber.FIVE));
     assertEquals(true, blackjack.playerWins(player1, dealer));
+  }
+
+  @Test
+  public void testPlayerBeatsDealer_Loses(){
+    player1.accept(new Card(CardSuit.SPADE, CardNumber.FOUR));
+    dealer.accept(new Card(CardSuit.HEART, CardNumber.FIVE));
+    assertEquals(false, blackjack.playerWins(player1, dealer));
+  }
+
+  @Test
+  public void testPlayerBeatsDealer_OneCard_ACE(){
+    player1.accept(new Card(CardSuit.SPADE, CardNumber.ACE));
+    dealer.accept(new Card(CardSuit.HEART, CardNumber.FIVE));
+    assertEquals(true, blackjack.playerWins(player1, dealer));
+  }
+
+  @Test
+  public void testPlayerBeatsDealer_WinsWith2Aces(){
+    player1.accept(new Card(CardSuit.SPADE, CardNumber.ACE));
+    player1.accept(new Card(CardSuit.HEART, CardNumber.ACE));
+
+    dealer.accept(new Card(CardSuit.HEART, CardNumber.SIX));
+    dealer.accept(new Card(CardSuit.CLUB, CardNumber.FIVE));
+
+    assertEquals(true, blackjack.playerWins(player1, dealer));
+  }
+
+  @Test
+  public void testPlayerBeatsDealer_LosesGoesBust(){
+    player1.accept(new Card(CardSuit.SPADE, CardNumber.TEN));
+    player1.accept(new Card(CardSuit.HEART, CardNumber.KING));
+    player1.accept(new Card(CardSuit.HEART, CardNumber.TWO));
+
+    dealer.accept(new Card(CardSuit.HEART, CardNumber.SIX));
+    dealer.accept(new Card(CardSuit.CLUB, CardNumber.FIVE));
+
+    assertEquals(false, blackjack.playerWins(player1, dealer));
+  }
+
+  @Test
+  public void testPlayerWinsWithLowOption(){
+    player1.accept(new Card(CardSuit.SPADE, CardNumber.KING));
+    player1.accept(new Card(CardSuit.HEART, CardNumber.JACK));
+    player1.accept(new Card(CardSuit.CLUB, CardNumber.ACE));
+
+    dealer.accept(new Card(CardSuit.HEART, CardNumber.TEN));
+    dealer.accept(new Card(CardSuit.CLUB, CardNumber.QUEEN));
+
+    int [] scores = blackjack.scoreHand(player1);
+
+    assertEquals(true, blackjack.playerWins(player1, dealer));
+    assertEquals(21, scores[0]);
+    assertEquals(-1, scores[1]);
   }
 
   @Test

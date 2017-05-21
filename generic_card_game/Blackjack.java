@@ -24,41 +24,51 @@ public class Blackjack extends RulesEngine {
   }
 
   public boolean playerWins(Player player, Dealer dealer){
-    int score_of_player = scoreHand(player);
-    int score_of_dealer = scoreHand(dealer);
-
-    if (score_of_player > score_of_dealer )
-      return true;
-    else return false;
-  }
-  
-  /* this is required for the Homework specification, but not by Blackjack */
-  public Player compareHands(LinkedList<Player> players){
-    int results[] = new int[players.size()];
-    int max_position = 0;
-    int index = 0;
-    int max_score = scoreHand(players.getFirst());
-
-    for(Player player : players){
-      results[index] = scoreHand(player);
-      if (results[index] > max_score) {
-        max_score = results[index];
-        max_position = index;
-      }
-      index++;
+    int[] scores_of_player = scoreHand(player);
+    int[] scores_of_dealer = scoreHand(dealer);
+    boolean win = false;
+    
+    if (scores_of_player[0] > scores_of_dealer[0] && scores_of_player[0] > scores_of_dealer[1]){
+      win = true;
     }
-    return players.get(max_position);
+    if (scores_of_player[1] > scores_of_dealer[0] && scores_of_player[1] > scores_of_dealer[1]){
+      win = true;
+    }
+    return win;
   }
 
-  public int scoreHand(Player player){
-    int score = 0;
-    for (Card card: player.hand()){
-      score += value(card);
+  public int[] scoreHand(Player player){
+    int aces = player.numberOfAces();
+    int lowAceScore = lowAceScore(aces);
+    int highAceScore = highAceScore(aces);
+    int nonAcePoints = pointsOfNonAceCards(player);
+
+    int scores[] = new int[2];
+    int low_total = lowAceScore + nonAcePoints;
+    int high_total = highAceScore + nonAcePoints;
+
+    if (low_total > bust){
+      scores[0] = -1;
     }
-    if (score > bust){
-      return -1;
+    else { scores[0] = low_total; }
+
+    if (high_total > bust) {
+      scores[1] = -1;
     }
-    else return score;
+    else { scores[1] = high_total; }
+
+    return scores;
+  }
+
+  private int lowAceScore(int numberOfAces){
+    return numberOfAces;
+  }
+
+  private int highAceScore(int numberOfAces){
+    if (numberOfAces > 0){
+      return 11 + (numberOfAces-1);
+    }
+    else return 0;
   }
 
   public int pointsOfNonAceCards(Player player){
